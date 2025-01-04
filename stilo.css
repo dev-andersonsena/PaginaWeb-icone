@@ -1,0 +1,14 @@
+body {
+    display: flex;              /* Ativa o flexbox */
+    justify-content: center;    /* Centraliza horizontalmente */
+    align-items: center;        /* Centraliza verticalmente */
+    height: 100vh;    
+    margin: 0;                  /* Remove margens padrão */
+    background-color: #f0f0f0;  /* Cor de fundo opcional */
+    font-family: Arial, sans-serif;
+    font-size: 3rem !important;  /* Define uma fonte */
+}
+h1 {
+    color: #333;                /* Cor do texto */
+               /* Tamanho do texto */
+}
