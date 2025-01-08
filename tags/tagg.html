@@ -3,85 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Captura de Vídeo</title>
+    <title>Texto Rolante</title>
     <style>
-        #video {
+        #marquee-container {
             width: 100%;
-            max-width: 600px;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
         }
-        #recordButton {
-            margin-top: 10px;
+        #marquee {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
         }
-        #downloadButton {
-            margin-top: 10px;
-            display: none;
+        @keyframes marquee {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Captura de Vídeo</h1>
-    <video id="video" autoplay muted></video>
-    <button id="recordButton">Iniciar Gravação</button>
-    <button id="downloadButton">Baixar Vídeo</button>
+    <div id="marquee-container">
+        <div id="marquee">Texto asadfadfadfafsa</div>
+    </div>
+
     <script>
-        const video = document.getElementById('video');
-        const recordButton = document.getElementById('recordButton');
-        const downloadButton = document.getElementById('downloadButton');
-        let mediaRecorder;
-        let recordedChunks = [];
-
-        // Solicitar permissão e acessar a webcam
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-                mediaRecorder = new MediaRecorder(stream);
-
-                mediaRecorder.ondataavailable = function(event) {
-                    if (event.data.size > 0) {
-                        recordedChunks.push(event.data);
-                    }
-                };
-
-                mediaRecorder.onstop = function() {
-                    const blob = new Blob(recordedChunks, { type: 'video/webm' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    a.download = 'video.webm';
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    recordedChunks = [];
-                };
-            })
-            .catch(error => {
-                console.error('Erro ao acessar a câmera: ', error);
-            });
-
-        // Iniciar e parar gravação ao clicar no botão
-        recordButton.addEventListener('click', () => {
-            if (mediaRecorder.state === 'inactive') {
-                mediaRecorder.start();
-                recordButton.textContent = 'Parar Gravação';
-            } else {
-                mediaRecorder.stop();
-                recordButton.textContent = 'Iniciar Gravação';
-                downloadButton.style.display = 'inline-block';
-            }
-        });
-
-        // Baixar o vídeo gravado ao clicar no botão de download
-        downloadButton.addEventListener('click', () => {
-            const blob = new Blob(recordedChunks, { type: 'video/webm' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = 'video.webm';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
+        document.addEventListener('DOMContentLoaded', () => {
+            const marquee = document.getElementById('marquee');
+            const width = marquee.offsetWidth;
+            marquee.style.animationDuration = `${width / 100}s`;
         });
     </script>
 </body>
